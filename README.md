@@ -5,7 +5,7 @@ WRITTEN FOR PYTHON VERSION 3.6
 
 Minecraft Server Player Count for Discord v1.0 by SuperShadowPlay#8793
 
-Make sure you have discord.py installed (You can install it in the command line with "pip install discord.py')
+Make sure you have discord.py installed (You can install it in the command line with "pip install discord")
 and mcstatus (You can install it in the command line with "pip install mcstatus"
 
 Run the configbot.py before anything. This will create a file
