@@ -58,6 +58,8 @@ async def on_message(message):
     #Makes cBasePrompt = 0 usable
     if cBasePrompt == 0:
         cPrompt = '<@' + str(client.user.id) + '>'
+    else:
+        cPrompt = cBasePrompt
         
     #Detects if the bot was called
     if msgSplit[0] == cPrompt:
@@ -76,7 +78,7 @@ async def on_message(message):
                 if cSkipNoPlayers == False:
                     await client.send_message(message.channel, cNoPlayers.format(cIP))
                 
-            if cEnableNames == True and '{1}' in cMessageSend:
+            elif cEnableNames == True and '{1}' in cMessageSend and serverStatus.players.online != 0:
                 mcQuery = mcServer.query()
                 await client.send_message(message.channel, cMessageSend.format(serverStatus.players.online, ", ".join(mcQuery.players.names), cIP))
 
@@ -115,7 +117,7 @@ async def on_ready():
     if cBasePrompt == 0:
         cPromptText = '@' + client.user.name
     else:
-        cPromptText = str(cPrompt)
+        cPromptText = str(cBasePrompt)
     print('Prompt: ' + cPromptText)
     print('------')
     
