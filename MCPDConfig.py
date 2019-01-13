@@ -14,6 +14,7 @@ cPort = 00000
 cRefresh = 60
 
 #What message to use for the beginnings of commands, setting this to 0 makes it an @mention to the bot (Default 0)
+#Make sure to add "quotes" around a new prompt
 cBasePrompt = 0
 
 #"enable-query" in your "server.properties" MUST BE SET TO "true" TO DISPLAY PLAYER NAMES
