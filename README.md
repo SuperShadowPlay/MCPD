@@ -50,11 +50,7 @@ Added a whole slew of new configs that go along with player name display
 
 When there is one player, it's player not players
 
-## Troubleshooting/Contact Info
-If you can't paste in your bot's run token, either
-run configbot.py from the IDLE editor, or
-input whatever you want and then edit the
-second value in psConfig.txt, it's after "True;"
+## Contact Info
 
 Email me at SuperShadowPlay@null.net
 or contact me on discord at SuperShadowPlay#8793
