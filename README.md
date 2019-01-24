@@ -11,14 +11,12 @@ Depends on
 
 > mcstatus
 
-<sup>install them with pip on the command line</sup>
+<sup>Install them with pip on the command line.</sup>
 
-## First run
-Run the `configbot.py` file in a python 3 interpreter. This will
-create a file called psConfig.txt in the same directory/folder as `configbot.py` 
-that will store your configuration for this program.
+## Before Running
+Make sure you have edited `MCPDConfig.py` to your liking, or
 
-The `runbot.py` and `psConfig.txt` **must** be in the same directory/folder to run.
+else the bot will not work.
 
 ## General Use
 Run your bot with the `runbot.py` file from a python 3 interpreter
