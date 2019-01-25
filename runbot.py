@@ -48,6 +48,10 @@ async def playerSidebar():
 @client.event
 async def on_message(message):
     msgSplit = message.content.split()
+    try:
+        msgSplit[0]
+    except IndexError:
+        return
 
     if len(msgSplit) == 1 or 0:
         return
