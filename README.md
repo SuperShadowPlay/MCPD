@@ -18,10 +18,20 @@ Make sure you have edited `MCPDConfig.py` to your liking, or
 
 else the bot will not work.
 
-## General Use
-Run your bot with the `runbot.py` file from a python 3 interpreter
+<b>In the config is the `cPrompt` variable, what you set it to, is what
+	
+will call the bot for it's commands.</b>
 
-To ping your bot send "@\<bot> ping" in a channel that your bot can access
+## General Use
+Run your bot with the `runbot.py` file from a python 3 interpreter.
+
+To get all of the commands listed in discord, send `<prompt> help` in a channel that your bot can access.
+
+To ping your bot send `<prompt> ping` .
+
+To get the players online (and their names if enabled) send `<prompt> list`.
+
+To get the link to this Github repo, send `<prompt> source`
 
 ## Changelog
 #### User facing:
@@ -36,6 +46,10 @@ Changed way you can prompt the bot to attention
 Added command to display online player count and names
 
 	`<prompt> list`
+	
+Added help command
+	
+	`<prompt> help`
 
 
 #### Config:
