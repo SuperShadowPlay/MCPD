@@ -25,9 +25,9 @@ will call the bot for it's commands.</b>
 ## General Use
 Run your bot with the `runbot.py` file from a python 3 interpreter.
 
-To get all of the commands listed in discord, send `<prompt> help` in a channel that your bot can access.
+To get all of the commands listed in discord, send `<prompt> help` in a channel that your bot can access
 
-To ping your bot send `<prompt> ping` .
+To ping your bot send `<prompt> ping` 
 
 To get the players online (and their names if enabled) send `<prompt> list`.
 
