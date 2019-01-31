@@ -1,4 +1,5 @@
-#MCPD v1.1 By SuperShadowPlay#8793 
+#MCPD v1.1 from github.com/SuperShadowPlay/MCPD
+print('Loading MCPD v1.1')
 import discord
 import asyncio
 from mcstatus import MinecraftServer
@@ -17,8 +18,6 @@ cBasePrompt
 cEnableNames
 cSkipNoPlayers
 cNoPlayers'''
-
-print('#MCPD v1.1 By SuperShadowPlay#8793')
 
 #Checks for TOKEN
 if TOKEN == 'null':
@@ -47,16 +46,15 @@ async def playerSidebar():
 
 @client.event
 async def on_message(message):
+    if message.author == client.user:
+        return
+    
     msgSplit = message.content.split()
+    #If the message content is **only** an image, this
+    #prevents an error message from clogging the console.
     try:
         msgSplit[0]
     except IndexError:
-        return
-
-    if len(msgSplit) == 1 or 0:
-        return
-    
-    if message.author == client.user:
         return
 
     #Makes cBasePrompt = 0 usable
@@ -67,11 +65,19 @@ async def on_message(message):
         
     #Detects if the bot was called
     if msgSplit[0] == cPrompt:
+
+        #<prompt> help - Lists commands
+        if msgSplit[1].lower() == 'help':
+            await client.send_message(message.channel, '''The commands available are:
+{0} Help - Displays this message
+{0} List - List the players online at {1}
+{0} Ping - Ping the bot
+{0} Source - Github Source Code'''.format(cPrompt, cIP))
         
         #<prompt> ping - Pings the bot
         if msgSplit[1].lower() == 'ping':
             await client.send_message(message.channel, 'Pong!')
-            print('Pong\'ed user ' + str(message.author) + ' at ' + str(getTime()))
+            print('Pong\'ed user ' + str(message.author) + ' :: ' + str(getTime()))
 
         #<prompt> list - Lists players online. Only the amount is listed if cEnableNames is False
         if msgSplit[1].lower() == 'list':
@@ -88,6 +94,13 @@ async def on_message(message):
 
             else:
                 await client.send_message(message.channel, cMessageSend.format(serverStatus.players.online))
+
+        #<prompt> source - Github link
+        if msgSplit[1].lower() == 'source':
+            await client.send_message(message.channel, '''This bot's source code is licensed under the MIT license.
+Full source code at:
+https://github.com/SuperShadowPlay/MCPD''')
+            print(str(message.author) + ' Requested Source :: ' + getTime())
 
 async def printStatus():
     #Prints the updating status to the console
@@ -114,7 +127,7 @@ async def printStatus():
 
 @client.event
 async def on_ready():
-    print('Logged in as')
+    print('Logged in as:')
     print(client.user.name)
     print(client.user.id)
     #Enables correct display when cPrompt is 0
