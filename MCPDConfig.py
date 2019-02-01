@@ -18,7 +18,7 @@ cRefresh = 60
 cBasePrompt = 0
 
 #"enable-query" in your "server.properties" MUST BE SET TO "true" TO DISPLAY PLAYER NAMES
-#Once that is done, set this to True to enable player names in mc! list (Default False)
+#Once that is done, set this to True to enable player names in <prompt> list (Default False)
 cEnableNames = False
 
 #What message to send with <prompt> list
