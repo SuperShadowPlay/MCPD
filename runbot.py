@@ -1,5 +1,5 @@
-#MCPD v1.1 from github.com/SuperShadowPlay/MCPD
-print('Loading MCPD v1.1')
+#MCPD v1.2 from github.com/SuperShadowPlay/MCPD
+print('Loading MCPD v1.2')
 import discord
 import asyncio
 from mcstatus import MinecraftServer
@@ -97,7 +97,7 @@ async def on_message(message):
 
         #<prompt> source - Github link
         if msgSplit[1].lower() == 'source':
-            await client.send_message(message.channel, '''This bot's source code is licensed under the MIT license.
+            await client.send_message(message.channel, '''MCPD v1.2, licensed under the MIT license.
 Full source code at:
 https://github.com/SuperShadowPlay/MCPD''')
             print(str(message.author) + ' Requested Source :: ' + getTime())

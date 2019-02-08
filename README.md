@@ -1,5 +1,5 @@
 # MCPD - Minecraft Player Count for Discord
-**Version 1.1**
+**Version 1.2**
 
 A discord bot you host yourself, that will display the amount of people in a specified Minecraft Server at version 1.7+
 
