@@ -1,5 +1,5 @@
 # MCPD - Minecraft Player Count for Discord
-**Version 1.2**
+**Version 1.3**
 
 A discord bot you host yourself, that will display the amount of people in a specified Minecraft Server at version 1.7+
 
@@ -7,9 +7,11 @@ A discord bot you host yourself, that will display the amount of people in a spe
 
 Depends on
 
-> discord.py
+> discord.py (0.12)
 
 > mcstatus
+
+**This bot uses an outdated version of discord.py and I'm too lazy to port it right now.**
 
 <sup>Install them with pip on the command line.</sup>
 
@@ -19,7 +21,7 @@ Make sure you have edited `MCPDConfig.py` to your liking, or
 else the bot will not work.
 
 <b>In the config is the `cPrompt` variable, what you set it to, is what
-	
+
 will call the bot for it's commands.</b>
 
 ## General Use
@@ -27,7 +29,7 @@ Run your bot with the `runbot.py` file from a python 3 interpreter.
 
 To get all of the commands listed in discord, send `<prompt> help` in a channel that your bot can access
 
-To ping your bot send `<prompt> ping` 
+To ping your bot send `<prompt> ping`
 
 To get the players online (and their names if enabled) send `<prompt> list`.
 
@@ -46,9 +48,9 @@ Changed way you can prompt the bot to attention
 Added command to display online player count and names
 
 	`<prompt> list`
-	
+
 Added help command
-	
+
 	`<prompt> help`
 
 

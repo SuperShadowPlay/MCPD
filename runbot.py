@@ -1,10 +1,10 @@
-"""MCPD v1.2 from github.com/SuperShadowPlay/MCPD ."""
+"""MCPD v1.3 from github.com/SuperShadowPlay/MCPD ."""
 import discord
 import asyncio
 from mcstatus import MinecraftServer
 import time
 from MCPDConfig import *
-print("Loaded MCPD v1.2")
+print("Loaded MCPD v1.3")
 client = discord.Client()
 
 '''Imports:
@@ -35,16 +35,53 @@ def getTime():
     return _bigTime
 
 
-async def playerSidebar():
-    """Bot status for player count."""
+async def playerCountUpdate():
+    """Bot status for player count in the sidebar and output.
+
+    The top part of this function is for the sidebar player count,
+    the bottom part is for the output channel (if requested)"""
     await client.wait_until_ready()
     while not client.is_closed:
+        #Sidebar portion
         mcServer = MinecraftServer(cIP, cPort)
         serverStatus = mcServer.status()
         sidebarCount = '{0} Players Online'.format(serverStatus.players.online)
         await client.change_presence(game=discord.Game(name=sidebarCount))
-        await asyncio.sleep(int(cRefresh))
+
+        #Output portion
+        if cEnableNames is True:
+            mcQuery = mcServer.query()
+        try:
+            lastSetOfPlayers
+        except NameError:
+            lastSetOfPlayers = "Notch"
+        #Check if requested
+        if cEnableOutput is True and cEnableNames is True:
+            if cDynamicOutput is True:
+                #This is dynamic output, essentially sending a new output
+                #message only when player counts change.
+                if mcQuery.players.names != lastSetOfPlayers:
+                    lastSetOfPlayers = mcQuery.players.names
+                    if serverStatus.players.online != 0:
+                        playerNames = ", ".join(mcQuery.players.names)
+                        outputMessage = """
+{0} | {1} Players Online |
+{2}""".format(getTime(), serverStatus.players.online, playerNames)
+                    else:
+                        outputMessage = ("{0} | No players online".format(getTime()))
+                    await client.send_message(discord.Object(id=cOutputChannel), outputMessage)
+            elif cDynamicOutput is False:
+                if serverStatus.players.online != 0:
+                    playerNames = ", ".join(mcQuery.players.names)
+                    outputMessage = """
+{0} | {1} Players Online |
+{2}""".format(getTime(), serverStatus.players.online, playerNames)
+                else:
+                    outputMessage = ("{0} | No players online".format(getTime()))
+            await client.send_message(discord.Object(id=cOutputChannel), outputMessage)
+
         #Change the player count on the basis of how many seconds were inputted into cRefresh
+        await asyncio.sleep(int(cRefresh))
 
 @client.event
 async def on_message(message):
@@ -152,6 +189,6 @@ async def on_ready():
     print('Prompt: ' + cPromptText)
     print('------')
 
-client.loop.create_task(playerSidebar())
+client.loop.create_task(playerCountUpdate())
 client.loop.create_task(printStatus())
 client.run(TOKEN)
