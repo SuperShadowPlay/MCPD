@@ -4,7 +4,9 @@ import asyncio
 from mcstatus import MinecraftServer
 import time
 from MCPDConfig import *
-print("Loaded MCPD v1.3")
+print("Loaded Libraries")
+print("This software is licensed under the MIT License")
+print("For more information see ./LICENSE\n")
 client = discord.Client()
 
 '''Imports:
@@ -57,10 +59,12 @@ async def playerCountUpdate():
             lastSetOfPlayers = "Notch"
         #Check if requested
         if cEnableOutput is True and cEnableNames is True:
+
             if cDynamicOutput is True:
                 #This is dynamic output, essentially sending a new output
                 #message only when player counts change.
-                if mcQuery.players.names != lastSetOfPlayers:
+                diffOfPlayers = (mcQuery.players.names != lastSetOfPlayers)
+                if diffOfPlayers is True:
                     lastSetOfPlayers = mcQuery.players.names
                     if serverStatus.players.online != 0:
                         playerNames = ", ".join(mcQuery.players.names)
@@ -69,8 +73,11 @@ async def playerCountUpdate():
 {2}""".format(getTime(), serverStatus.players.online, playerNames)
                     else:
                         outputMessage = ("{0} | No players online".format(getTime()))
-                    await client.send_message(discord.Object(id=cOutputChannel), outputMessage)
+                    if diffOfPlayers is True:
+                        await client.send_message(discord.Object(id=cOutputChannel), outputMessage)
+
             elif cDynamicOutput is False:
+                #Just print every <cRefresh> seconds
                 if serverStatus.players.online != 0:
                     playerNames = ", ".join(mcQuery.players.names)
                     outputMessage = """
@@ -78,10 +85,12 @@ async def playerCountUpdate():
 {2}""".format(getTime(), serverStatus.players.online, playerNames)
                 else:
                     outputMessage = ("{0} | No players online".format(getTime()))
-            await client.send_message(discord.Object(id=cOutputChannel), outputMessage)
+
+                await client.send_message(discord.Object(id=cOutputChannel), outputMessage)
 
         #Change the player count on the basis of how many seconds were inputted into cRefresh
         await asyncio.sleep(int(cRefresh))
+
 
 @client.event
 async def on_message(message):
