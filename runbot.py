@@ -41,14 +41,15 @@ async def playerCountUpdate():
     """Bot status for player count in the sidebar and output.
 
     The top part of this function is for the sidebar player count,
-    the bottom part is for the output channel (if requested)"""
+    the bottom part is for the output channel (if requested)."""
     await client.wait_until_ready()
     while not client.is_closed:
         #Sidebar portion
         mcServer = MinecraftServer(cIP, cPort)
         serverStatus = mcServer.status()
         sidebarCount = '{0} Players Online'.format(serverStatus.players.online)
-        await client.change_presence(game=discord.Game(name=sidebarCount))
+        await client.change_presence(status=discord.Status.online,
+                                     game=discord.Game(sidebarCount))
 
         #Output portion
         if cEnableNames is True:
@@ -74,7 +75,7 @@ async def playerCountUpdate():
                     else:
                         outputMessage = ("{0} | No players online".format(getTime()))
                     if diffOfPlayers is True:
-                        await client.send_message(discord.Object(id=cOutputChannel), outputMessage)
+                        await cOutputChannel.send(outputMessage)
 
             elif cDynamicOutput is False:
                 #Just print every <cRefresh> seconds
@@ -86,7 +87,7 @@ async def playerCountUpdate():
                 else:
                     outputMessage = ("{0} | No players online".format(getTime()))
 
-                await client.send_message(discord.Object(id=cOutputChannel), outputMessage)
+                await cOutputChannel.send(outputMessage)
 
         #Change the player count on the basis of how many seconds were inputted into cRefresh
         await asyncio.sleep(int(cRefresh))
@@ -117,8 +118,7 @@ async def on_message(message):
 
         #<prompt> help - Lists commands
         if msgSplit[1].lower() == 'help':
-            await client.send_message(message.channel,
-                                      '''The commands available are:
+            await message.channel.send('''The commands available are:
 {0} Help - Displays this message
 {0} List - List the players online at {1}
 {0} Ping - Ping the bot
@@ -126,7 +126,7 @@ async def on_message(message):
 
         #<prompt> ping - Pings the bot
         if msgSplit[1].lower() == 'ping':
-            await client.send_message(message.channel, 'Pong!')
+            await message.channel.send('Pong!')
             print('Pong\'ed user ' + str(message.author)
                   + ' :: ' + str(getTime()))
 
@@ -138,24 +138,21 @@ async def on_message(message):
 
             if serverStatus.players.online == 0:
                 if cSkipNoPlayers is False:
-                    await client.send_message(message.channel, cNoPlayers.format(cIP))
+                    await message.channel.send(cNoPlayers.format(cIP))
 
             elif cEnableNames is True and '{1}' in cMessageSend:
                 if serverStatus.players.online != 0:
                     onPlayers = serverStatus.players.online
                     mcQuery = mcServer.query()
-                    await client.send_message(
-                                              message.channel,
-                                              cMessageSend.format(onPlayers,
-                                                                  ", ".join(mcQuery.players.names), cIP))
+                    await messagge.channel.send(cMessageSend.format(onPlayers,
+                                                ", ".join(mcQuery.players.names), cIP))
 
             else:
-                await client.send_message(message.channel,
-                                          cMessageSend.format(serverStatus.players.online))
+                await message.channel.send(cMessageSend.format(serverStatus.players.online))
 
         #<prompt> source - Github link
         if msgSplit[1].lower() == 'source':
-            await client.send_message(message.channel, '''MCPD v1.2, licensed under the MIT license.
+            await message.channel.send('''MCPD v1.2, licensed under the MIT license.
 Full source code at:
 https://github.com/SuperShadowPlay/MCPD''')
             print(str(message.author) + ' Requested Source :: ' + getTime())

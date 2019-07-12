@@ -1,17 +1,15 @@
 # MCPD - Minecraft Player Count for Discord
-**Version 1.3**
+**Version 2.0**
 
 A discord bot you host yourself, that will display the amount of people in a specified Minecraft Server at version 1.7+
 
-**WRITTEN IN PYTHON VERSION 3.6**
+**WRITTEN IN PYTHON VERSION 3.7**
 
 Depends on
 
-> discord.py (0.12)
+> discord.py
 
 > mcstatus
-
-**This bot uses an outdated version of discord.py and I'm too lazy to port it right now.**
 
 <sup>Install them with pip on the command line.</sup>
 
