@@ -1,4 +1,4 @@
-"""MCPD v1.3 from github.com/SuperShadowPlay/MCPD ."""
+"""MCPD v2.0 from github.com/SuperShadowPlay/MCPD ."""
 import discord
 import asyncio
 from mcstatus import MinecraftServer
@@ -41,15 +41,16 @@ async def playerCountUpdate():
     """Bot status for player count in the sidebar and output.
 
     The top part of this function is for the sidebar player count,
-    the bottom part is for the output channel (if requested)."""
+    the bottom part is for the output channel (if requested).
+    """
     await client.wait_until_ready()
-    while not client.is_closed:
+    while not client.is_closed():
         #Sidebar portion
         mcServer = MinecraftServer(cIP, cPort)
         serverStatus = mcServer.status()
-        sidebarCount = '{0} Players Online'.format(serverStatus.players.online)
+        sidebarCount = discord.Game('{0} Players Online'.format(serverStatus.players.online))
         await client.change_presence(status=discord.Status.online,
-                                     game=discord.Game(sidebarCount))
+                                     activity=sidebarCount)
 
         #Output portion
         if cEnableNames is True:
@@ -108,7 +109,7 @@ async def on_message(message):
         return
 
     #Makes cBasePrompt = 0 usable
-    if cBasePrompt == 0:
+    if cBasePrompt == "0":
         cPrompt = '<@' + str(client.user.id) + '>'
     else:
         cPrompt = cBasePrompt
@@ -152,7 +153,7 @@ async def on_message(message):
 
         #<prompt> source - Github link
         if msgSplit[1].lower() == 'source':
-            await message.channel.send('''MCPD v1.2, licensed under the MIT license.
+            await message.channel.send('''MCPD v2.0, licensed under the MIT license.
 Full source code at:
 https://github.com/SuperShadowPlay/MCPD''')
             print(str(message.author) + ' Requested Source :: ' + getTime())
@@ -161,7 +162,7 @@ https://github.com/SuperShadowPlay/MCPD''')
 async def printStatus():
     """Print the updating status to the console."""
     await client.wait_until_ready()
-    while not client.is_closed:
+    while not client.is_closed():
         mcServer = MinecraftServer(cIP, cPort)
         serverStatus = mcServer.status()
 
@@ -188,7 +189,7 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     #Enables correct display when cPrompt is 0
-    if cBasePrompt == 0:
+    if cBasePrompt == "0":
         cPromptText = '@' + client.user.name
     else:
         cPromptText = str(cBasePrompt)

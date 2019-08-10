@@ -4,7 +4,7 @@
 #################################
 
 #Bot's run token
-TOKEN = "Null"
+TOKEN = "null"
 
 #Minecraft Server IP and Port (the IP *will* display to users, so capitalize at will
 cIP = "example.minecraft.server"
