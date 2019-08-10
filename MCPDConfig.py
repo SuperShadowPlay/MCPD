@@ -1,10 +1,10 @@
-"""Config file for MCPD v1.3"""
+"""Config file for MCPD v2.0"""
 "KEEP THE QUOTES"
 "True and False and case sensitive!"
 #################################
 
 #Bot's run token
-TOKEN = "Null"
+TOKEN = "null"
 
 #Minecraft Server IP and Port (the IP *will* display to users, so capitalize at will
 cIP = "example.minecraft.server"
@@ -37,7 +37,7 @@ cNoPlayers = "There are no players on {0}"
 #Set to True to enable output of players to a chatbox (cEnableNames must be True!!!) (Default False)
 cEnableOutput = False
 #Put the channel id of the output channel here
-cOutputChannel = "Null"
+cOutputChannel = 0
 #Set to True to update the player count each time the list of players change
 #Set to False to update regardless of changes (Default True)
 cDynamicOutput = True
