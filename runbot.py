@@ -1,4 +1,4 @@
-"""MCPD v2.0 from github.com/SuperShadowPlay/MCPD ."""
+"""MCPD Uptime v1.0 from github.com/SuperShadowPlay/MCPD ."""
 import discord
 import asyncio
 from mcstatus import MinecraftServer
@@ -15,12 +15,7 @@ cIP
 cPort
 cRefresh
 cBasePrompt
-cEnableNames
-cSkipNoPlayers
-cNoPlayers
-cEnableOutput
-cOutputChannel
-cDynamicOutput'''
+cNoPlayers'''
 
 
 if TOKEN == 'null':
@@ -45,62 +40,76 @@ async def playerCountUpdate():
     """
     await client.wait_until_ready()
     while not client.is_closed():
-        #Sidebar portion
+        serverDown = False
         mcServer = MinecraftServer(cIP, cPort)
-        serverStatus = mcServer.status()
-        sidebarCount = discord.Game('{0} Players Online'.format(serverStatus.players.online))
-        await client.change_presence(status=discord.Status.online,
-                                     activity=sidebarCount)
-
-        #Output portion
-        if cEnableNames is True:
-            mcQuery = mcServer.query()
         try:
-            lastSetOfPlayers
-        except NameError:
-            lastSetOfPlayers = "Notch"
-        #Check if requested
-        if cEnableOutput is True and cEnableNames is True:
+            serverStatus = mcServer.status()
+        except KeyboardInterrupt:
+            raise
+        except:
+            serverDown = True
 
-            if cDynamicOutput is True:
-                #This is dynamic output, essentially sending a new output
-                #message only when player counts change.
-                diffOfPlayers = (mcQuery.players.names != lastSetOfPlayers)
-                if diffOfPlayers is True:
-                    lastSetOfPlayers = mcQuery.players.names
-                    if serverStatus.players.online != 0:
-                        playerNames = ", ".join(mcQuery.players.names)
-                        outputMessage = """
-{0} | {1} Players Online |
-{2}""".format(getTime(), serverStatus.players.online, playerNames)
-                    else:
-                        outputMessage = ("{0} | No players online".format(getTime()))
-                    if diffOfPlayers is True:
-                        await cOutputChannel.send(outputMessage)
-
-            elif cDynamicOutput is False:
-                #Just print every <cRefresh> seconds
-                if serverStatus.players.online != 0:
-                    playerNames = ", ".join(mcQuery.players.names)
-                    outputMessage = """
-{0} | {1} Players Online |
-{2}""".format(getTime(), serverStatus.players.online, playerNames)
-                else:
-                    outputMessage = ("{0} | No players online".format(getTime()))
-
-                await cOutputChannel.send(outputMessage)
+        if serverDown is False:
+            if serverStatus.players.online == 1:
+                sApply = ''
+            else:
+                sApply = 's'
+            await client.change_presence(status=discord.Status.online,
+                                         activity=discord.Game('Server Up; {0} Player{1}'.format(serverStatus.players.online, sApply)))
+        else:
+            await client.change_presence(status=discord.Status.online,
+                                         activity=discord.Game('Server Down'))
 
         #Change the player count on the basis of how many seconds were inputted into cRefresh
         await asyncio.sleep(int(cRefresh))
 
 
+async def warnUptime():
+    """Whole point of branch Uptime."""
+    connectStatus = True
+    await client.wait_until_ready()
+    while not client.is_closed():
+        mcServer = MinecraftServer(cIP, cPort)
+        lastStatus = connectStatus
+
+        #Ping server
+        try:
+            pingTime = mcServer.ping()
+            connectStatus = True
+
+        #Workaround for bad coding
+        except KeyboardInterrupt:
+            raise
+
+        #Failing to ping the server can raise a lot of
+        #different errors depending on the circumstance.
+        #So to catch them all I covered my behind above and
+        #made a plain "except:" block
+        except:
+            connectStatus = False
+
+        if connectStatus != lastStatus and connectStatus is False:
+            print('Server is down! :: {0}'.format(getTime()))
+            for i in cUsers:
+                await client.get_user(i).send('{0} is down Detected at {1}!'.format(cIP, getTime()))
+
+        await asyncio.sleep(int(cRefresh))
+
+
 @client.event
 async def on_message(message):
-    """On message portion, most of the actual programming is in this function."""
+    """On message portion.
+
+    I'm too lazy to update this to the non-async method, so this
+    is where users can interact with the bot."""
+
+    #Don't respond to self
     if message.author == client.user:
         return
 
+    #Make a list to sort through for arg parsing
     msgSplit = message.content.split()
+
     #If the message content is **only** an image, this
     #prevents an error message from clogging the console.
     try:
@@ -121,39 +130,18 @@ async def on_message(message):
         if msgSplit[1].lower() == 'help':
             await message.channel.send('''The commands available are:
 {0} Help - Displays this message
-{0} List - List the players online at {1}
 {0} Ping - Ping the bot
-{0} Source - Github Source Code'''.format(cPrompt, cIP))
+{0} Source - Github Source Code'''.format(cPrompt))
 
         #<prompt> ping - Pings the bot
         if msgSplit[1].lower() == 'ping':
             await message.channel.send('Pong!')
-            print('Pong\'ed user ' + str(message.author)
+            print('Pong\'ed user ' + str(message.id)
                   + ' :: ' + str(getTime()))
-
-        #<prompt> list - Lists players online. Only the amount is
-        #listed if cEnableNames is False
-        if msgSplit[1].lower() == 'list':
-            mcServer = MinecraftServer(cIP, cPort)
-            serverStatus = mcServer.status()
-
-            if serverStatus.players.online == 0:
-                if cSkipNoPlayers is False:
-                    await message.channel.send(cNoPlayers.format(cIP))
-
-            elif cEnableNames is True and '{1}' in cMessageSend:
-                if serverStatus.players.online != 0:
-                    onPlayers = serverStatus.players.online
-                    mcQuery = mcServer.query()
-                    await messagge.channel.send(cMessageSend.format(onPlayers,
-                                                ", ".join(mcQuery.players.names), cIP))
-
-            else:
-                await message.channel.send(cMessageSend.format(serverStatus.players.online))
 
         #<prompt> source - Github link
         if msgSplit[1].lower() == 'source':
-            await message.channel.send('''MCPD v2.0, licensed under the MIT license.
+            await message.channel.send('''MCPD Uptime v1.0, licensed under the MIT license.
 Full source code at:
 https://github.com/SuperShadowPlay/MCPD''')
             print(str(message.author) + ' Requested Source :: ' + getTime())
@@ -163,17 +151,16 @@ async def printStatus():
     """Print the updating status to the console."""
     await client.wait_until_ready()
     while not client.is_closed():
+        serverDown = False
         mcServer = MinecraftServer(cIP, cPort)
-        serverStatus = mcServer.status()
+        try:
+            serverStatus = mcServer.status()
+        except KeyboardInterrupt:
+            raise
+        except:
+            serverDown = True
 
-        if cEnableNames is True and '{1}' in cMessageSend and serverStatus.players.online != 0:
-            mcQuery = mcServer.query()
-            if serverStatus.players.online == 1:
-                print('{0} Player :: {2} :: {1}'.format(serverStatus.players.online, ", ".join(mcQuery.players.names), getTime()))
-            else:
-                print('{0} Players :: {2} :: {1}'.format(serverStatus.players.online, ", ".join(mcQuery.players.names), getTime()))
-
-        else:
+        if serverDown is False:
             if serverStatus.players.online == 1:
                 print('{0} Player :: {1}'.format(serverStatus.players.online, getTime()))
             else:
@@ -198,4 +185,5 @@ async def on_ready():
 
 client.loop.create_task(playerCountUpdate())
 client.loop.create_task(printStatus())
+client.loop.create_task(warnUptime())
 client.run(TOKEN)
