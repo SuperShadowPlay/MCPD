@@ -1,4 +1,4 @@
-"""MCPD Uptime v1.0 from github.com/SuperShadowPlay/MCPD ."""
+"""MCPD Uptime v1.0 from github.com/SuperShadowPlay/MCPD/tree/Uptime ."""
 import discord
 import asyncio
 from mcstatus import MinecraftServer
@@ -159,7 +159,7 @@ async def on_message(message):
         if msgSplit[1].lower() == 'source':
             await message.channel.send('''MCPD Uptime v1.0, licensed under the MIT license.
 Full source code at:
-https://github.com/SuperShadowPlay/MCPD''')
+https://github.com/SuperShadowPlay/MCPD/tree/Uptime''')
             print(str(message.author) + ' Requested Source :: ' + getTime())
 
 
