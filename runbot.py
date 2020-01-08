@@ -15,7 +15,8 @@ cIP
 cPort
 cRefresh
 cBasePrompt
-cNoPlayers'''
+cUsers
+cChannels'''
 
 
 if TOKEN == 'null':
@@ -90,8 +91,23 @@ async def warnUptime():
 
         if connectStatus != lastStatus and connectStatus is False:
             print('Server is down! :: {0}'.format(getTime()))
+            statusMessage = '{0}:{1} is not responding :: Detected at {2}!'.format(cIP, cPort, getTime())
+            #Alert users
             for i in cUsers:
-                await client.get_user(i).send('{0} is down Detected at {1}!'.format(cIP, getTime()))
+                await client.get_user(i).send(statusMessage)
+            #Alert channels
+            for i in cChannels:
+                await client.get_channel(i).send(statusMessage)
+
+        if connectStatus != lastStatus and connectStatus is True:
+            print('Server is up! :: {0}'.format(getTime()))
+            statusMessage = '{0}:{1} is responding :: Detected at {2}!'.format(cIP, cPort, getTime())
+            #Alert users
+            for i in cUsers:
+                await client.get_user(i).send(statusMessage)
+            #Alert channels
+            for i in cUsers:
+                await client.get_channel(i).send(statusMessage)
 
         await asyncio.sleep(int(cRefresh))
 
