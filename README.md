@@ -13,6 +13,11 @@ Depends on
 
 <sup>Install them with pip on the command line.</sup>
 
+## THIS IS OLD CODE
+
+If you have trouble I'd be willing to help you out, but set
+your expectations very low. I think I was 13 when I wrote this.
+
 ## Before Running
 Make sure you have edited `MCPDConfig.py` to your liking, or
 
@@ -64,5 +69,5 @@ When there is one player, it's player not players
 
 ## Contact Info
 
-Email me at SuperShadowPlay@null.net
+Email me at SuperShadowPlay@gmail.com
 or contact me on discord at SuperShadowPlay#8793
