@@ -19,6 +19,9 @@ If you have trouble I'd be willing to help you out, but set
 your expectations very low. I think I was 13 when I wrote this.
 
 ## Before Running
+
+**In your `server.properties` file, set `enable-query=true`**
+
 Make sure you have edited `MCPDConfig.py` to your liking, or
 
 else the bot will not work.
